@@ -37,9 +37,9 @@ This was the only cleaning step I required; the data was already cleaned with th
 
 ## Query 6
 ![Q6](Screenshots/Query%206.png)
-![Q6R1](Query%20Results/Query%201%20Output-PRO.png)
-![Q6R2](Query%20Results/Query%201%20Output-HAM.png)
-![Q6R3](Query%20Results/Query%201%20Output-MSC.png)
+![Q6R1](Query%20Results/Query%206%20Output-PRO.png)
+![Q6R2](Query%20Results/Query%206%20Output-HAM.png)
+![Q6R3](Query%20Results/Query%206%20Output-MSC.png)
 
 ## Query 7
 ![Q7](Screenshots/Query%207.png)
