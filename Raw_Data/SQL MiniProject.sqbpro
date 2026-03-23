@@ -6,50 +6,89 @@ WHERE Year IS NULL;
 
 DELETE FROM Drivers
 WHERE Year IS NULL;
-
+
+
 -- Number of Race Wins per Constructor
 SELECT Car, COUNT(*) AS Winners FROM Races
 GROUP BY Car
-ORDER BY Winners DESC;
+ORDER BY Winners DESC;
+
 
 -- Number of Total Points for Each Driver
 SELECT Driver, SUM(Pts) AS Total_Points FROM Drivers
 GROUP BY Driver
-ORDER BY Total_Points DESC;
-
--- All-Time Leaderboard in Fastest Laps
-SELECT Driver, COUNT(*) AS Number_Of_Fastest_Laps FROM Fastest_Laps
-GROUP BY Driver
-ORDER BY Number_Of_Fastest_Laps DESC;
-
--- Longest Tracks on Average by Lap Count, with Minimum 20 Races All Time
-SELECT Grand_Prix, ROUND(AVG(Laps), 2) AS Average_Laps, COUNT(*) AS Number_Of_Races FROM Races
-GROUP BY Grand_Prix HAVING Number_Of_Races &gt; 20
-ORDER BY Average_Laps DESC;
-
--- Fastest Laps in Milliseconds after 2000
-SELECT b.Fastest_Lap_MS AS &quot;Fastest Lap in MS&quot;, a.Driver, a.Nationality, a.Year, a.Pos as &quot;Position that Year&quot;, a.Pts AS &quot;Points that Year&quot;, b.Grand_Prix, b.Car FROM
-(SELECT Pos, Driver, Year, Nationality, Car, Pts FROM Drivers) AS a
-INNER JOIN 
-(SELECT Grand_Prix, Driver, Year, Car,
-    (CAST(SUBSTR(Fastest_Lap, 1, INSTR(Fastest_Lap, ':') - 1) AS INTEGER) * 60000 +
-     CAST(SUBSTR(Fastest_Lap, INSTR(Fastest_Lap, ':') + 1) AS REAL) * 1000
-    ) AS Fastest_Lap_MS
-FROM Fastest_Laps) AS b
-ON a.Driver = b.Driver AND a.Year = b.Year
-WHERE a.Year &gt; 2000
-ORDER BY &quot;Fastest Lap in MS&quot; ASC;
-
--- Longest Races for each Race Winner All Time
-SELECT CONCAT(Grand_Prix, ' ', Year) AS Race, &quot;Date&quot;, Winner, Car, Laps, &quot;Time&quot;,
-	RANK() OVER(PARTITION BY Winner ORDER BY Laps DESC) as Laps_Rank FROM Races;
-
--- All Time Constructors' Leaderboard by Points
-WITH Driver_Car AS (
-	SELECT CONCAT(Driver, ' ', Car) as Driver_Car, Car AS Constructor, Pts, Year
-	FROM Drivers
-)
-SELECT Constructor, SUM(Pts) AS Total_Points_For_Constructor, COUNT(DISTINCT Driver_Car) AS Unique_Drivers FROM Driver_Car
-GROUP BY Constructor HAVING Total_Points_For_Constructor &gt; 200
-ORDER BY Total_Points_For_Constructor DESC;
+ORDER BY Total_Points DESC;
+
+
+
+-- All-Time Leaderboard in Fastest Laps
+
+SELECT Driver, COUNT(*) AS Number_Of_Fastest_Laps FROM Fastest_Laps
+
+GROUP BY Driver
+
+ORDER BY Number_Of_Fastest_Laps DESC;
+
+
+
+-- Longest Tracks on Average by Lap Count, with Minimum 20 Races All Time
+
+SELECT Grand_Prix, ROUND(AVG(Laps), 2) AS Average_Laps, COUNT(*) AS Number_Of_Races FROM Races
+
+GROUP BY Grand_Prix HAVING Number_Of_Races &gt; 20
+
+ORDER BY Average_Laps DESC;
+
+
+
+-- Fastest Laps in Milliseconds after 2000
+
+SELECT b.Fastest_Lap_MS AS &quot;Fastest Lap in MS&quot;, a.Driver, a.Nationality, a.Year, a.Pos as &quot;Position that Year&quot;, a.Pts AS &quot;Points that Year&quot;, b.Grand_Prix, b.Car FROM
+
+(SELECT Pos, Driver, Year, Nationality, Car, Pts FROM Drivers) AS a
+
+INNER JOIN 
+
+(SELECT Grand_Prix, Driver, Year, Car,
+
+    (CAST(SUBSTR(Fastest_Lap, 1, INSTR(Fastest_Lap, ':') - 1) AS INTEGER) * 60000 +
+
+     CAST(SUBSTR(Fastest_Lap, INSTR(Fastest_Lap, ':') + 1) AS REAL) * 1000
+
+    ) AS Fastest_Lap_MS
+
+FROM Fastest_Laps) AS b
+
+ON a.Driver = b.Driver AND a.Year = b.Year
+
+WHERE a.Year &gt; 2000
+
+ORDER BY &quot;Fastest Lap in MS&quot; ASC;
+
+
+
+-- Longest Races for each Race Winner All Time
+
+SELECT CONCAT(Grand_Prix, ' ', Year) AS Race, &quot;Date&quot;, Winner, Car, Laps, &quot;Time&quot;,
+
+	RANK() OVER(PARTITION BY Winner ORDER BY Laps DESC) as Laps_Rank FROM Races;
+
+
+
+-- All Time Constructors' Leaderboard by Points
+
+WITH Driver_Car AS (
+
+	SELECT CONCAT(Driver, ' ', Car) as Driver_Car, Car AS Constructor, Pts, Year
+
+	FROM Drivers
+
+)
+
+SELECT Constructor, SUM(Pts) AS Total_Points_For_Constructor, COUNT(DISTINCT Driver_Car) AS Unique_Drivers FROM Driver_Car
+
+GROUP BY Constructor HAVING Total_Points_For_Constructor &gt; 200
+
+ORDER BY Total_Points_For_Constructor DESC;
+
 </sql><current_tab id="0"/></tab_sql></sqlb_project>
